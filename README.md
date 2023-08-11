@@ -20,6 +20,7 @@ CodeSeparator provides the following settings to customize the appearence of the
 * `CodeSeparator.style`: Sets the style of the line. Choose between: `solid`, `dotted` or `dashed`.
 * `CodeSeparator.thickness`: Sets the thickness of the line in pixels.
 * `CodeSeparator.position`: Sets the position of the separator, either at the top or at the bottom.
+* `CodeSeparator.showInRuler`: Sets the visibility of the separators in the overview ruler (right-side scrollbar).
 * `CodeSeparator.triggers`: Set the trigger patterns for each individual language via a simple JSON. The format is the following:
 
     ```
@@ -30,6 +31,7 @@ CodeSeparator provides the following settings to customize the appearence of the
         },
         ...
     ]
+    ```
 Reloading the window might be necessary after changing the settings.
 
 ## Known Issues
@@ -40,8 +42,10 @@ None so far. If you encounter one, don't hesitate to open an issue on the GitHub
 
 None.
 
-### Version 1.0.0
+### Version 1.0.1
 
-Initial release of CodeSeparator.
+1. Fixed the warning message re-appearing every time on languages with no mappings. Now it will only show once.
+2. Added the ability to set the visibility of the separators in the overview ruler (right-side scrollbar).
+3. Added some new language mappings.
 
 **Enjoy!**

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-// This extension is eavily based on the VSCode extension-API examples (decorator sample).
+// This extension is heavily based on the VSCode extension-API examples (decorator sample).
 export function activate(context: vscode.ExtensionContext) {
 
 	console.log("CodeSeparator registered");
@@ -8,14 +8,21 @@ export function activate(context: vscode.ExtensionContext) {
 	let timeout: NodeJS.Timer | undefined = undefined;
 	let activeEditor = vscode.window.activeTextEditor;
 
+	// Used to avoid rendering the warning messages too often.
+	let no_mapping_ackd = false;
+	let unknown_lang_ackd = false;
+
 	// Get some of the settings.
 	const cnf_color = (String)(vscode.workspace.getConfiguration("CodeSeparator").get("color"));
 	const cnf_style = (String)(vscode.workspace.getConfiguration("CodeSeparator").get("style"));
 	const cnf_width = (String)(vscode.workspace.getConfiguration("CodeSeparator").get("thickness"));
 	const cnf_position = (String)(vscode.workspace.getConfiguration("CodeSeparator").get("position"));
+	const cnf_ruler = (Boolean)(vscode.workspace.getConfiguration("CodeSeparator").get("showInRuler"));
+
+	// Construct the trigger map.
 	const trigger_mappings = constructMap();
 
-	// Define the decorator size, color, position, etc...
+	// Define the decorator size, color, position, etc... (no ruler)
 	const separatorDecorator = vscode.window.createTextEditorDecorationType({
 
 		isWholeLine: true,
@@ -23,6 +30,19 @@ export function activate(context: vscode.ExtensionContext) {
 		borderWidth: cnf_position === "top" ? (cnf_width + "px 0 0 0") : ("0 0" + cnf_width + "px 0"),
 		borderColor: cnf_color,
 		opacity: "0%"
+	});
+
+	// Define the decorator size, color, position, etc... (with ruler)
+	const separatorDecorator2 = vscode.window.createTextEditorDecorationType({
+
+		isWholeLine: true,
+		borderStyle: cnf_style,
+		borderWidth: cnf_position === "top" ? (cnf_width + "px 0 0 0") : ("0 0" + cnf_width + "px 0"),
+		borderColor: cnf_color,
+		opacity: "0%",
+
+		overviewRulerColor: cnf_color,
+		overviewRulerLane: 7
 	});
 
 	// Function to update and draw the decorators.
@@ -61,8 +81,16 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		}
 
-		// Tell VSCode to render the decorators.
-		activeEditor.setDecorations(separatorDecorator, separators);
+		// Tell VSCode to render the decorators (check if the ruler setting is true or not).
+		if(cnf_ruler === true) {
+
+			activeEditor.setDecorations(separatorDecorator2, separators);
+		}
+
+		else {
+
+			activeEditor.setDecorations(separatorDecorator, separators);
+		}
 	}
 
 	// This function gets the trigger pattern for the currently active editor language.
@@ -72,12 +100,18 @@ export function activate(context: vscode.ExtensionContext) {
 		let trigger: string | undefined;
 		let language = vscode.window.activeTextEditor?.document.languageId;
 
+		// Just in case...
 		if(language === null || language === undefined || language === "") {
 
-			vscode.window.showWarningMessage(
+			if(unknown_lang_ackd === false) {
 
-				"CodeSeparator: The current editor language is unknown, deactivating."
-			);
+				vscode.window.showWarningMessage(
+
+					"CodeSeparator: The current editor language is unknown, deactivating."
+				);
+
+				unknown_lang_ackd = true;
+			}
 
 			return("");
 		}
@@ -86,11 +120,16 @@ export function activate(context: vscode.ExtensionContext) {
 
 		if(trigger === undefined) {
 
-			vscode.window.showWarningMessage(
+			if(no_mapping_ackd === false) {
 
-				"CodeSeparator: No mapping was found for the " + language +
-				" language, but you can add it in the settings. deactivating."
-			);
+				vscode.window.showWarningMessage(
+
+					"CodeSeparator: No mapping was found for the " + language +
+					" language, but you can add it in the settings. deactivating."
+				);
+
+				no_mapping_ackd = true;
+			}
 
 			return("");
 		}
@@ -115,7 +154,6 @@ export function activate(context: vscode.ExtensionContext) {
 		// Transform the list into a map.
 		triggers.forEach((elem) => {
 
-			console.log("dbg " + elem.trigger);
 			trigger_map.set(elem.language, elem.trigger);
 		});
 

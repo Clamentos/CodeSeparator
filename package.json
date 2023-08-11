@@ -1,8 +1,8 @@
 {
   "name": "codeseparator",
   "displayName": "CodeSeparator",
-  "description": "Draws a custom colored code separating line when /// or other comment triggers are detected.",
-  "version": "1.0.0",
+  "description": "Draws a custom colored code separating line when /// or other comment triggers are detected (per-language customizable).",
+  "version": "1.0.1",
   "license": "SEE LICENSE IN LICENSE.md",
   "publisher": "EnricoGattoMonticone",
   "icon": "resources/ico.png",
@@ -45,6 +45,11 @@
           "default": "top",
           "enum": ["top", "bottom"],
           "description": "Set the position of the separator line: top or bottom of the text line."
+        },
+        "CodeSeparator.showInRuler": {
+          "type": "boolean",
+          "default": true,
+          "description": "Set the visibility of the separator lines in the overview ruler."
         },
         "CodeSeparator.triggers": {
           "type": "array",
@@ -126,6 +131,10 @@
             },
             {
               "language": "xml",
+              "trigger": "<!---->"
+            },
+            {
+              "language": "markdown",
               "trigger": "<!---->"
             },
             {
