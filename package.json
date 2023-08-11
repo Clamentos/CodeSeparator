@@ -1,13 +1,13 @@
 {
   "name": "codeseparator",
   "displayName": "CodeSeparator",
-  "description": "Draws a custom colored code separating line when /// is detected.",
+  "description": "Draws a custom colored code separating line when /// or other comment triggers are detected.",
   "version": "1.0.0",
   "license": "SEE LICENSE IN LICENSE.md",
-  "icon": "./resources/ico.png",
+  "icon": "resources/ico.png",
   "repository": {
     "type": "git",
-    "url": "..."
+    "url": "https://github.com/Clamentos/CodeSeparator"
   },
   "engines": {
     "vscode": "^1.81.0"
