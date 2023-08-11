@@ -6,7 +6,7 @@ This extremely simple extension can be used to improve readability of your code 
 
 Typing triple forward-slash `///`, `<!---->`, `##`, `---` or other special comment sequences (depending on the language), will trigger CodeSeparator which will draw a horizontal line across the text area.
 
-gif goes here...
+![Preview](https://github.com/Clamentos/CodeSeparator/blob/main/resources/preview.gif)
 
 ## Requirements
 
