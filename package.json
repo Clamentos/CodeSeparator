@@ -4,6 +4,7 @@
   "description": "Draws a custom colored code separating line when /// or other comment triggers are detected.",
   "version": "1.0.0",
   "license": "SEE LICENSE IN LICENSE.md",
+  "publisher": "EnricoGattoMonticone",
   "icon": "resources/ico.png",
   "repository": {
     "type": "git",
