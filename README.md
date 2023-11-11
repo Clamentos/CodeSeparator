@@ -73,11 +73,11 @@ VSCode extensions are `.vsix` files that can be directly installed into the edit
 
 1. Clone this repository into your local machine.
 2. Open the terminal and navigate to the root directory of the previously cloned repository: `CodeSeparator`.
-3. Install `vsce` if you don't have it already, with the following comand:
+3. Install `vsce` if you don't have it already, with the following command:
 ```console
 npm install -g @vscode/vsce
 ```
-4. Generate the `.vsix` package with the following comand:
+4. Generate the `.vsix` package with the following command:
 ```console
 vsce package
 ```
