@@ -1,51 +1,96 @@
 # CodeSeparator
 
-This extremely simple extension can be used to improve readability of your code by placing separator lines in any point you want.
+This extremely simple extension can be used to improve the readability of your code by placing customizable separator lines in any point you want.
 
 ## Features
 
-Typing triple forward-slash `///`, `<!---->`, `##`, `---` or other special comment sequences (depending on the language), will trigger CodeSeparator which will draw a horizontal line across the text area.
+Typing: `///`, `<!---->`, `##`, `---` or other special comment sequences (depending on the language), will trigger the extension which will draw a horizontal line across the text area.
 
-![Preview](https://github.com/Clamentos/CodeSeparator/blob/main/resources/preview.gif)
-
-## Requirements
-
-No external dependency is needed for running this extension.
+<img src ="https://github.com/Clamentos/CodeSeparator/blob/main/resources/preview.gif?raw=true"/>
 
 ## Extension Settings
 
-CodeSeparator provides the following settings to customize the appearence of the separator lines:
+CodeSeparator provides the following settings:
 
-* `CodeSeparator.color`: Sets the color of the line (in hex).
-* `CodeSeparator.style`: Sets the style of the line. Choose between: `solid`, `dotted` or `dashed`.
-* `CodeSeparator.thickness`: Sets the thickness of the line in pixels.
-* `CodeSeparator.position`: Sets the position of the separator, either at the top or at the bottom.
-* `CodeSeparator.showInRuler`: Sets the visibility of the separators in the overview ruler (right-side scrollbar).
-* `CodeSeparator.triggers`: Set the trigger patterns for each individual language via a simple JSON. The format is the following:
+* `hideInRuler`: Hides the visibility of all separators in the overview ruler on the right.
+* `timeout`: Sets the scan wait time (in milliseconds) between edits.
+* `triggers`: Sets the trigger pattern for each language via a simple JSON specified in the following format:
 
-    ```
+    ```json
     [
-        {
-            "language": "string",
-            "trigger": "string"
-        },
-        ...
+      {
+        "trigger": "///",
+        "languages": [
+            "c",
+            "java",
+            "javascript"
+        ]
+      },
+      {
+        "trigger": "##",
+        "languages": [
+            "python",
+            "yaml",
+        ]
+      }
     ]
     ```
-Reloading the window might be necessary after changing the settings.
 
-## Known Issues
+* `separatorTypes`: Sets the separator styles via a simple JSON. Writing the separator name after the trigger, will cause CodeSeparator to reder the specific matching separator style:
 
-None so far. If you encounter one, don't hesitate to open an issue on the GitHub repo.
+    ```json
+    [
+      {
+        "name": "",
+        "color": "#666666",
+        "style": "solid",
+        "thickness": 2,
+        "onBottom": false,
+        "drawInRuler": true
+      },
+      {
+        "name": ".",
+        "color": "#888888",
+        "style": "dotted",
+        "thickness": 2,
+        "onBottom": false,
+        "drawInRuler": true
+      }
+    ]
+    ```
+* `excluded`: Sets the excluded languages via a simple JSON array of strings:
 
-## Release Notes
+    ```json
+    [
+      "json"
+    ]
+    ```
+Reloading the window is necessary after changing the settings.
 
-None.
+## Building from source
 
-### Version 1.0.1
+VSCode extensions are `.vsix` files that can be directly installed into the editor. In order to generate such file from the source code, perform the following steps (requires `Node.js` installed):
 
-1. Fixed the warning message re-appearing every time on languages with no mappings. Now it will only show once.
-2. Added the ability to set the visibility of the separators in the overview ruler (right-side scrollbar).
-3. Added some new language mappings.
+1. Clone this repository into your local machine.
+2. Open the terminal and navigate to the root directory of the previously cloned repository: `CodeSeparator`.
+3. Install `vsce` if you don't have it already, with the following comand:
+```console
+npm install -g @vscode/vsce
+```
+4. Generate the `.vsix` package with the following comand:
+```console
+vsce package
+```
+5. The package is now ready to be manually installed into VSCode. To do that, please follow the instructions on https://github.com/Clamentos/CodeSeparator/releases
+
+### Version 2.0.0
+
+Heavy remake of the extension:
+
+1. Changed the JSON structure of the triggers in the settings. Now it should be more compact and readable.
+2. Added the option to define multiple types of styles. Each style can be called from the text editor by writing the name of the style after the trigger sequence.
+3. Added the option to exclude languages.
+4. Added more recognized languages.
+5. Fixed a bug where writing a trigger sequence outside of comments (such as a string variable) would cause the extension to draw the separator.
 
 **Enjoy!**

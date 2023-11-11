@@ -1,8 +1,8 @@
 {
   "name": "codeseparator",
   "displayName": "CodeSeparator",
-  "description": "Draws a custom colored code separating line when /// or other comment triggers are detected (per-language customizable).",
-  "version": "1.0.1",
+  "description": "Draws a custom styled separating line when /// or other comment triggers are detected (per-language customizable).",
+  "version": "2.0.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "publisher": "EnricoGattoMonticone",
   "icon": "resources/ico.png",
@@ -24,134 +24,165 @@
     "configuration": {
       "title": "CodeSeparator",
       "properties": {
-        "CodeSeparator.color": {
-          "type": "string",
-          "default": "#666666",
-          "description": "Set the color of the separator line."
-        },
-        "CodeSeparator.style": {
-          "type": "string",
-          "default": "solid",
-          "enum": ["solid", "dotted", "dashed"],
-          "description": "Set the separator line style."
-        },
-        "CodeSeparator.thickness": {
-          "type": "integer",
-          "default": 1,
-          "description": "Set the separator line thickness in pixels."
-        },
-        "CodeSeparator.position": {
-          "type": "string",
-          "default": "top",
-          "enum": ["top", "bottom"],
-          "description": "Set the position of the separator line: top or bottom of the text line."
-        },
-        "CodeSeparator.showInRuler": {
+        "CodeSeparator.hideInRuler": {
           "type": "boolean",
-          "default": true,
-          "description": "Set the visibility of the separator lines in the overview ruler."
+          "default": false,
+          "description": "Hides the visibility of all separators in the overview ruler on the right."
+        },
+        "CodeSeparator.timeout": {
+          "type": "integer",
+          "default": 250,
+          "description": "Sets the scan wait time (in milliseconds) between edits."
         },
         "CodeSeparator.triggers": {
           "type": "array",
+          "description": "Sets the trigger pattern for each language.",
           "items": {
             "type": "object",
-            "title": "Language to trigger mappings",
             "properties": {
-              "language": {
-                "type": "string",
-                "description": "Name of the language."
-              },
               "trigger": {
                 "type": "string",
                 "description": "Trigger pattern."
+              },
+              "languages": {
+                "type": "array",
+                "description": "Name of the languages.",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
-          "description": "Set the trigger pattern for each language.",
           "default": [
             {
-              "language": "c",
-              "trigger": "///"
+              "trigger": "///",
+              "languages": [
+                "c",
+                "cpp",
+                "csharp",
+                "css",
+                "cuda-cpp",
+                "fsharp",
+                "go",
+                "groovy",
+                "java",
+                "javascript",
+                "javascriptreact",
+                "jsonc",
+                "kotlin",
+                "objective-c",
+                "objective-cpp",
+                "plaintext",
+                "php",
+                "rust",
+                "sass",
+                "scala",
+                "scss",
+                "swift",
+                "typescript",
+                "typescriptreact",
+                "verilog",
+                "systemverilog"
+              ]
             },
             {
-              "language": "cpp",
-              "trigger": "///"
+              "trigger": ";;;",
+              "languages": [
+                "clojure"
+              ]
             },
             {
-              "language": "csharp",
-              "trigger": "///"
+              "trigger": "%%",
+              "languages": [
+                "latex"
+              ]
             },
             {
-              "language": "go",
-              "trigger": "///"
+              "trigger": "##",
+              "languages": [
+                "dockercompose",
+                "dockerfile",
+                "ignore",
+                "java-properties",
+                "perl",
+                "perl6",
+                "python",
+                "r",
+                "ruby",
+                "yaml"
+              ]
             },
             {
-              "language": "java",
-              "trigger": "///"
+              "trigger": "---",
+              "languages": [
+                "lua",
+                "sql",
+                "vhdl"
+              ]
             },
             {
-              "language": "javascript",
-              "trigger": "///"
-            },
+              "trigger": "<!---->",
+              "languages": [
+                "html",
+                "markdown",
+                "vue",
+                "vue-html",
+                "xml"
+              ]
+            }
+          ]
+        },
+        "CodeSeparator.excluded": {
+          "type": "array",
+          "description": "Sets the excluded languages.",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "json"
+          ]
+        },
+        "CodeSeparator.separatorTypes": {
+          "type": "array",
+          "description": "Sets the separator styles. Writing the separator name after the trigger, will cause CodeSeparator to reder the specific matching separator style.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The separator name."
+              },
+              "color": {
+                "type": "string",
+                "description": "The separator color in hex."
+              },
+              "style": {
+                "type": "string",
+                "enum": ["solid", "dotted", "dashed"],
+                "description": "The separator style."
+              },
+              "thickness": {
+                "type": "integer",
+                "description": "The separator thickness in pixels."
+              },
+              "onBottom": {
+                "type": "boolean",
+                "description": "Specifies if the separator should be drawn on bottom of the text line instead of the top."
+              },
+              "drawInRuler": {
+                "type": "boolean",
+                "description": "Specifies if the separator should appear in the overview ruler on the right."
+              }
+            }
+          },
+          "default": [
             {
-              "language": "javascriptreact",
-              "trigger": "///"
-            },
-            {
-              "language": "latex",
-              "trigger": "%%"
-            },
-            {
-              "language": "plaintext",
-              "trigger": "///"
-            },
-            {
-              "language": "python",
-              "trigger": "##"
-            },
-            {
-              "language": "rust",
-              "trigger": "///"
-            },
-            {
-              "language": "sql",
-              "trigger": "---"
-            },
-            {
-              "language": "typescript",
-              "trigger": "///"
-            },
-            {
-              "language": "typescriptreact",
-              "trigger": "///"
-            },
-            {
-              "language": "html",
-              "trigger": "<!---->"
-            },
-            {
-              "language": "xml",
-              "trigger": "<!---->"
-            },
-            {
-              "language": "markdown",
-              "trigger": "<!---->"
-            },
-            {
-              "language": "swift",
-              "trigger": "///"
-            },
-            {
-              "language": "ruby",
-              "trigger": "##"
-            },
-            {
-              "language": "css",
-              "trigger": "///"
-            },
-            {
-              "language": "php",
-              "trigger": "///"
+              "name": "",
+              "color": "#666666",
+              "style": "solid",
+              "thickness": 2,
+              "onBottom": false,
+              "drawInRuler": true
             }
           ]
         }
